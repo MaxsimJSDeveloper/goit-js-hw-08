@@ -85,22 +85,19 @@ const markup = images
 
 gallery.insertAdjacentHTML('beforeend', markup);
 
-const galleryItems = document.querySelectorAll('.gallery-item');
-
-galleryItems.forEach(item => {
-  item.addEventListener('click', outputImg);
-});
+gallery.addEventListener('click', outputImg);
 
 function outputImg(event) {
   event.preventDefault();
-  const increasImg = event.target.dataset.source;
+  if (!event.target.classList.contains('gallery-image')) return;
+  const increaseImg = event.target.dataset.source;
 
   const script = document.createElement('script');
   script.src =
     'https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js';
   script.onload = function () {
     const instance = basicLightbox.create(`
-      <img src="${increasImg}">
+      <img src="${increaseImg}">
     `);
 
     instance.show();
