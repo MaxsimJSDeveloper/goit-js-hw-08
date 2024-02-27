@@ -68,14 +68,14 @@ const gallery = document.querySelector('.gallery');
 
 const markup = images
   .map(
-    image =>
+    ({ preview, original, description }) =>
       ` <li class="gallery-item">
-        <a class="gallery-link" href="${image.original}">
+        <a class="gallery-link" href="${original}">
           <img
             class="gallery-image"
-            src="${image.preview}"
-            data-source="${image.original}"
-            alt="${image.description}"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
             width="360" height="200"
           />
         </a>
@@ -89,19 +89,11 @@ gallery.addEventListener('click', outputImg);
 
 function outputImg(event) {
   event.preventDefault();
+
   if (!event.target.classList.contains('gallery-image')) return;
+
   const increaseImg = event.target.dataset.source;
+  const instance = basicLightbox.create(`<img src="${increaseImg}">`);
 
-  const script = document.createElement('script');
-  script.src =
-    'https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js';
-  script.onload = function () {
-    const instance = basicLightbox.create(`
-      <img src="${increaseImg}">
-    `);
-
-    instance.show();
-  };
-
-  document.head.appendChild(script);
+  instance.show();
 }
