@@ -64,4 +64,47 @@ const images = [
   },
 ];
 
-console.log(images);
+const gallery = document.querySelector('.gallery');
+
+const markup = images
+  .map(
+    image =>
+      ` <li class="gallery-item">
+        <a class="gallery-link" href="${image.original}">
+          <img
+            class="gallery-image"
+            src="${image.preview}"
+            data-source="${image.original}"
+            alt="${image.description}"
+            width="360" height="200"
+          />
+        </a>
+      </li>`
+  )
+  .join('');
+
+gallery.insertAdjacentHTML('beforeend', markup);
+
+const galleryItems = document.querySelectorAll('.gallery-item');
+
+galleryItems.forEach(item => {
+  item.addEventListener('click', outputImg);
+});
+
+function outputImg(event) {
+  event.preventDefault();
+  const increasImg = event.target.dataset.source;
+
+  const script = document.createElement('script');
+  script.src =
+    'https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js';
+  script.onload = function () {
+    const instance = basicLightbox.create(`
+      <img src="${increasImg}">
+    `);
+
+    instance.show();
+  };
+
+  document.head.appendChild(script);
+}
